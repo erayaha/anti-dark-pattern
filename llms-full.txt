@@ -1,0 +1,61 @@
+# Anti-Dark Pattern Linter — Complete Documentation
+
+> Automated CI/CD dark pattern linter and regulatory compliance engine blocking deceptive front-end UX patterns before merge.
+
+## When to use this
+
+Use Anti-Dark Pattern when:
+- You need automated CI/CD gating against deceptive design patterns, confirm-shaming, roach motels, hidden costs, or forced continuity in pull requests.
+- You are auditing front-end codebases (React, JSX, TSX, Vue, Svelte, HTML, MDX, Astro) for compliance with FTC 16 CFR Part 425 ("Click to Cancel") and EU Digital Services Act (DSA Article 25).
+- You want deterministic offline linting with structured JSON, text, or GitHub Action annotation outputs.
+- You want an AI-extensible model-backed UX analysis engine to evaluate complex UI flows.
+
+## Architecture and Rule Engine
+
+Anti-Dark Pattern provides 8 deterministic offline compliance rules:
+1. `confirm-shaming`: Flags emotionally manipulative opt-out copy designed to induce guilt (e.g. "No thanks, I hate saving money").
+2. `fake-urgency`: Detects artificial scarcity indicators, countdown timers without persistent state, and misleading pressure tactics.
+3. `pre-selection`: Identifies pre-checked checkboxes for recurring add-ons, newsletter marketing, or data sharing.
+4. `roach-motel`: Detects asymmetrical friction between sign-up and cancellation (e.g. mandatory cancellation exit surveys, phone-only cancellation requirements).
+5. `hidden-costs`: Flags checkout flows where mandatory recurring fees or surprise charges appear at the final payment step.
+6. `disguised-ads`: Detects promotional content styled deceptively as navigation buttons or core site content.
+7. `trick-questions`: Identifies confusing double negatives, inverted toggles, or read-only pre-selected inputs.
+8. `nagging`: Flags repetitive modal prompts and forced re-prompts after explicit user rejection.
+
+## CLI Usage
+
+```bash
+# Basic scan
+npx anti-dark .
+
+# Output formatted for GitHub Actions pull request annotations
+npx anti-dark . --format github
+
+# Machine-readable JSON output for automated pipelines
+npx anti-dark . --format json
+
+# Filter specific rules
+npx anti-dark . --rules confirm-shaming,roach-motel
+```
+
+## Integrating Custom LLMs
+
+Implement the `PromptDrivenModel` contract:
+```typescript
+interface PromptDrivenModel {
+  reviewFile(input: {
+    filePath: string;
+    content: string;
+    rules: readonly DarkPatternRule[];
+  }): Promise<AnalysisFinding[]>;
+}
+```
+Wrap with `new ModelBackedAnalysisEngine(model)` to preserve standard CLI outputs and GitHub annotations.
+
+## Trust & Organization
+
+- Publisher: Erayaha Open Source Intelligence
+- Website: https://erayaha.github.io/anti-dark-pattern/
+- Contact: contact@erayaha.org
+- Repository: https://github.com/erayaha/anti-dark-pattern
+- Privacy Policy: https://erayaha.github.io/anti-dark-pattern/privacy/

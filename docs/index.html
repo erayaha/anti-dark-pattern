@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anti-Dark Pattern Linter — CI/CD Deceptive UX Compliance Scanner</title>
+  <meta name="description" content="Anti-Dark Pattern is an automated CI/CD linter that detects legally risky deceptive UX patterns (confirm-shaming, roach motels, fake urgency, hidden fees) in front-end code before merge.">
+  <link rel="canonical" href="https://erayaha.github.io/anti-dark-pattern/">
+  <meta property="og:title" content="Anti-Dark Pattern Linter — CI/CD Deceptive UX Compliance Scanner">
+  <meta property="og:description" content="Automated dark pattern detection for front-end codebases. Block deceptive UX patterns before merge.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://erayaha.github.io/anti-dark-pattern/og-image.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://erayaha.github.io/anti-dark-pattern/#software",
+        "name": "Anti-Dark Pattern Linter",
+        "description": "Automated CI/CD dark pattern detection engine and regulatory compliance scanner for front-end codebases.",
+        "url": "https://erayaha.github.io/anti-dark-pattern/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "publisher": {
+          "@id": "https://erayaha.github.io/anti-dark-pattern/#organization"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://erayaha.github.io/anti-dark-pattern/#organization",
+        "name": "Erayaha",
+        "url": "https://github.com/erayaha",
+        "logo": "https://erayaha.github.io/anti-dark-pattern/logo.png",
+        "sameAs": [
+          "https://github.com/erayaha",
+          "https://github.com/erayaha/anti-dark-pattern"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "technical support",
+          "email": "contact@erayaha.org",
+          "availableLanguage": ["English"]
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "US",
+          "addressLocality": "San Francisco",
+          "addressRegion": "CA"
+        }
+      }
+    ]
+  }
+  </script>
+  <style>
+    :root { --primary: #0f766e; --primary-dark: #115e59; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --muted: #475569; --border: #cbd5e1; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+    header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+    .brand { font-size: 1.25rem; font-weight: 700; color: var(--primary); text-decoration: none; }
+    nav a { margin-left: 20px; color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+    nav a:hover { color: var(--primary); }
+    .hero { margin-bottom: 40px; }
+    h1 { font-size: 2.4rem; color: var(--text); margin-bottom: 15px; }
+    .lead { font-size: 1.15rem; color: var(--muted); max-width: 750px; }
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 999px; background: #ccfbf1; color: var(--primary-dark); font-size: 0.85rem; font-weight: 700; margin-bottom: 10px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+    .grid-two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .code-box { background: #0f172a; color: #f8fafc; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.9rem; overflow-x: auto; }
+    button { background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+    button:hover { background: var(--primary-dark); }
+    textarea { width: 100%; height: 180px; font-family: monospace; font-size: 0.9rem; padding: 12px; border-radius: 8px; border: 1px solid var(--border); margin-top: 10px; resize: vertical; }
+    .finding-alert { background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; margin-top: 10px; border-radius: 6px; }
+    .finding-alert strong { color: #991b1b; }
+    .finding-clean { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 12px; margin-top: 10px; border-radius: 6px; color: #166534; font-weight: 600; }
+    @media (max-width: 768px) { .grid-two { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="https://erayaha.github.io/anti-dark-pattern/" class="brand">Anti-Dark Pattern</a>
+      <nav>
+        <a href="https://erayaha.github.io/anti-dark-pattern/about/">About</a>
+        <a href="https://erayaha.github.io/anti-dark-pattern/contact/">Contact</a>
+        <a href="https://erayaha.github.io/anti-dark-pattern/privacy/">Privacy Policy</a>
+        <a href="https://erayaha.github.io/anti-dark-pattern/llms.txt">llms.txt</a>
+        <a href="https://github.com/erayaha/anti-dark-pattern">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <span class="badge">CI/CD Compliance Linter</span>
+        <h1>Anti-Dark Pattern Linter</h1>
+        <p class="lead">
+          Automated CI/CD gatekeeper blocking deceptive, manipulative, and coercive front-end interface patterns before merge. Aligned with FTC 16 CFR Part 425 ("Click to Cancel") and EU Digital Services Act (DSA Article 25).
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>⚡ Quick Start — Run in Your Pipeline</h2>
+        <p>Execute directly in your terminal or continuous integration workflow:</p>
+        <div class="code-box">
+          # Run local scan across your project<br>
+          npx anti-dark .<br><br>
+          # Output GitHub Actions annotations to block pull requests<br>
+          npx anti-dark . --format github
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>🧪 In-Browser Interactive Rule Scanner</h2>
+        <p>Test UI snippets against our deterministic dark-pattern heuristics:</p>
+        
+        <div style="margin-bottom: 10px;">
+          <button type="button" onclick="loadPreset('prime')">Amazon Prime Cancellation</button>
+          <button type="button" onclick="loadPreset('linkedin')">LinkedIn Contact Sync</button>
+          <button type="button" onclick="loadPreset('urgency')">Fake Urgency Timer</button>
+          <button type="button" onclick="loadPreset('clean')">Clean Ethical UI</button>
+        </div>
+
+        <textarea id="code-input" placeholder="Paste HTML, JSX, Vue, or Svelte component code here..."></textarea>
+        
+        <div style="margin-top: 10px;">
+          <button type="button" onclick="runBrowserScan()">Scan Code Snippet</button>
+        </div>
+
+        <div id="results" style="margin-top: 15px;"></div>
+      </section>
+
+      <section class="grid-two">
+        <div class="card">
+          <h2>🛡️ Deterministic Rules</h2>
+          <ul>
+            <li><strong>confirm-shaming:</strong> Flags emotionally manipulative opt-out copy.</li>
+            <li><strong>fake-urgency:</strong> Flags artificial countdowns and unverified scarcity.</li>
+            <li><strong>pre-selection:</strong> Flags pre-checked add-on boxes and marketing opt-ins.</li>
+            <li><strong>roach-motel:</strong> Flags mandatory exit surveys and asymmetric friction.</li>
+            <li><strong>hidden-costs:</strong> Flags surprise fees injected at final checkout steps.</li>
+            <li><strong>trick-questions:</strong> Flags double negatives and inverted toggles.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>🤖 AI & Agent Integrations</h2>
+          <p>
+            Anti-Dark Pattern exposes standard Model Context Protocol (MCP) server endpoints and machine-readable instructions:
+          </p>
+          <ul>
+            <li><strong>LLM Guidelines:</strong> <a href="https://erayaha.github.io/anti-dark-pattern/llms.txt">/llms.txt</a> and <a href="https://erayaha.github.io/anti-dark-pattern/llms-full.txt">/llms-full.txt</a></li>
+            <li><strong>MCP Server Card:</strong> <a href="https://erayaha.github.io/anti-dark-pattern/.well-known/mcp/server-card.json">/.well-known/mcp/server-card.json</a></li>
+            <li><strong>AI Catalog:</strong> <a href="https://erayaha.github.io/anti-dark-pattern/.well-known/ai-catalog.json">/.well-known/ai-catalog.json</a></li>
+            <li><strong>XML Sitemap:</strong> <a href="https://erayaha.github.io/anti-dark-pattern/sitemap.xml">/sitemap.xml</a></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const presets = {
+      prime: `<button onClick={cancelMembership}>No thanks, I don't want FREE delivery and other benefits</button>\n<div>Before you go, tell us why you're leaving (Survey Required)</div>`,
+      linkedin: `<input type="checkbox" checked={true} readOnly /> Sync all 1,500 email contacts automatically`,
+      urgency: `<div class="timer">Only 2 items left in stock! Deal expires in 04:59</div>`,
+      clean: `<button onClick={confirmCancellation}>Cancel Subscription</button>\n<button onClick={keepSubscription}>Keep Subscription</button>`
+    };
+
+    function loadPreset(key) {
+      document.getElementById('code-input').value = presets[key] || '';
+      runBrowserScan();
+    }
+
+    function runBrowserScan() {
+      const code = document.getElementById('code-input').value;
+      const res = document.getElementById('results');
+      if (!code.trim()) {
+        res.innerHTML = '';
+        return;
+      }
+
+      const findings = [];
+      if (/I don't want (FREE|savings|discounts)|lose all/i.test(code)) {
+        findings.push({ rule: 'confirm-shaming', msg: 'Detected emotionally manipulative opt-out copy designed to induce guilt.' });
+      }
+      if (/why you're leaving|Survey Required/i.test(code)) {
+        findings.push({ rule: 'roach-motel', msg: 'Detected mandatory survey or extra friction placed before cancellation action.' });
+      }
+      if (/checked=\{?true\}?.*readOnly|readOnly.*checked=\{?true\}?/i.test(code)) {
+        findings.push({ rule: 'trick-questions', msg: 'Detected read-only pre-checked checkbox preventing user opt-out.' });
+      }
+      if (/Only \d+ items left|Deal expires in/i.test(code)) {
+        findings.push({ rule: 'fake-urgency', msg: 'Detected artificial scarcity timer or pressure prompt.' });
+      }
+
+      if (findings.length === 0) {
+        res.innerHTML = '<div class="finding-clean">✅ Clean! No dark patterns detected in this snippet.</div>';
+      } else {
+        res.innerHTML = findings.map(f => `
+          <div class="finding-alert">
+            <strong>[Rule Violation] ${f.rule}</strong>
+            <p style="margin: 4px 0 0 0;">${f.msg}</p>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Initialize with preset
+    loadPreset('prime');
+  </script>
+</body>
+</html>

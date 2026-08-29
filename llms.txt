@@ -1,0 +1,31 @@
+# Anti-Dark Pattern Linter
+
+> Automated CI/CD dark pattern linter and regulatory compliance engine blocking deceptive front-end UX patterns before merge.
+
+## When to use this
+
+Use Anti-Dark Pattern when:
+- You need automated CI/CD gating against deceptive design patterns, confirm-shaming, roach motels, hidden costs, or forced continuity in pull requests.
+- You are auditing front-end codebases (React, JSX, TSX, Vue, Svelte, HTML, MDX, Astro) for compliance with FTC 16 CFR Part 425 ("Click to Cancel") and EU Digital Services Act (DSA Article 25).
+- You want deterministic offline linting with structured JSON, text, or GitHub Action annotation outputs.
+- You want an AI-extensible model-backed UX analysis engine to evaluate complex UI flows.
+
+## Best-fit use cases
+
+1. **Pull Request Compliance Gate**: Run `anti-dark` on every pull request to detect deceptive subscription cancellations, pre-checked checkboxes, and countdown timer manipulations.
+2. **Regulatory UX Audit**: Scan legacy front-end code repositories for legal risk and generate remediation advice.
+3. **Design System Linting**: Verify that component libraries adhere to ethical, neutral choice architecture.
+
+## Tool capabilities
+
+- **Deterministic Rule Engine**: Offline heuristic scanner covering confirm-shaming, fake urgency, pre-selection, disguised ads, roach motels, hidden costs, and nagging.
+- **Pluggable Model Backends**: Open interface (`PromptDrivenModel`) allowing enterprise LLM adapters to review nuanced conversational or visual UX patterns.
+- **Multiple Output Formats**: Text table, structured JSON (`--format json`), and GitHub Actions annotations (`--format github`).
+
+## Canonical links
+
+- Homepage: https://erayaha.github.io/anti-dark-pattern/
+- GitHub Repository: https://github.com/erayaha/anti-dark-pattern
+- About & Mission: https://erayaha.github.io/anti-dark-pattern/about/
+- Contact: https://erayaha.github.io/anti-dark-pattern/contact/
+- Privacy Policy: https://erayaha.github.io/anti-dark-pattern/privacy/

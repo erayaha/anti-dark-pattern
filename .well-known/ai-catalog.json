@@ -1,0 +1,11 @@
+{
+  "name": "anti-dark-pattern",
+  "description": "AI agent tools, discovery catalogs, and MCP server endpoints for Anti-Dark Pattern Linter.",
+  "mcp_server": "https://erayaha.github.io/anti-dark-pattern/.well-known/mcp/server-card.json",
+  "llms_txt": "https://erayaha.github.io/anti-dark-pattern/llms.txt",
+  "documentation": "https://erayaha.github.io/anti-dark-pattern/",
+  "publisher": {
+    "name": "Erayaha",
+    "url": "https://github.com/erayaha"
+  }
+}

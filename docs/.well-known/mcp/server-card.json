@@ -1,0 +1,32 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema/server-card.json",
+  "name": "anti-dark-pattern",
+  "description": "Deterministic CI/CD dark pattern compliance linter and regulatory UX scanner.",
+  "homepage": "https://erayaha.github.io/anti-dark-pattern/",
+  "repository": "https://github.com/erayaha/anti-dark-pattern",
+  "publisher": {
+    "name": "Erayaha",
+    "url": "https://github.com/erayaha"
+  },
+  "tools": [
+    {
+      "name": "scan_dark_patterns",
+      "description": "Scans front-end code (HTML, JSX, TSX, Vue, Svelte) for deceptive dark patterns (confirm-shaming, roach motels, fake urgency, hidden costs).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The front-end code snippet to analyze"
+          },
+          "fileType": {
+            "type": "string",
+            "enum": ["html", "jsx", "tsx", "vue", "svelte", "mdx"],
+            "description": "File extension or template format"
+          }
+        },
+        "required": ["code"]
+      }
+    }
+  ]
+}
