@@ -192,4 +192,34 @@ describe('example fixture detection', () => {
 
     expect(trickQuestion.length).toBeGreaterThanOrEqual(1);
   });
+
+  it('detects deceptive patterns in Svelte and Vue template formats', () => {
+    const svelteContent = `<script>let autoRenew = true;</script>
+      <div>
+        <p>Your subscription renews automatically after the trial ends and you will be charged monthly.</p>
+        <button on:click={cancel}>Cancel subscription and lose all benefits</button>
+      </div>`;
+
+    const findings = DARK_PATTERN_RULES.flatMap((rule) =>
+      rule.detect(svelteContent, 'src/components/Plan.svelte'),
+    );
+
+    expect(findings.length).toBeGreaterThanOrEqual(2);
+    expect(findings.some((f) => f.ruleId === 'forced-continuity')).toBe(true);
+    expect(findings.some((f) => f.ruleId === 'confirm-shaming')).toBe(true);
+  });
+
+  it('detects countdown urgency in Astro and MDX components', () => {
+    const astroContent = `---
+import Layout from '../layouts/Layout.astro';
+---
+<div class="banner">
+  <span>Offer expires in 10 minutes</span>
+  <span>Only 5 spots remaining!</span>
+</div>`;
+
+    const findings = findRule('countdown-urgency').detect(astroContent, 'src/pages/checkout.astro');
+    expect(findings).toHaveLength(2);
+  });
 });
+

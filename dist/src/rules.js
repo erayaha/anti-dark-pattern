@@ -91,7 +91,8 @@ exports.DARK_PATTERN_RULES = [
             const findings = [];
             // Detect read-only pre-checked checkboxes spanning multiple lines (JSX pattern).
             // A readOnly checkbox is presented as a fixed, non-interactive pre-selected choice.
-            const readOnlyCheckboxPattern = /<input[\s\S]{0,300}type\s*=\s*["']checkbox["'][\s\S]{0,300}readOnly[\s\S]{0,100}\/>/gi;
+            // The 150-character bounds keep matching within a single element.
+            const readOnlyCheckboxPattern = /<input[\s\S]{0,150}type\s*=\s*["']checkbox["'][\s\S]{0,150}readOnly[\s\S]{0,100}\/>/gi;
             for (const match of content.matchAll(readOnlyCheckboxPattern)) {
                 findings.push((0, utils_1.createFinding)(this, filePath, content, match.index ?? 0, match[0], 'Detected a read-only pre-checked checkbox that prevents users from opting out.'));
             }

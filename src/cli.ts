@@ -18,6 +18,7 @@ interface ParsedArgs {
   paths: string[];
   ruleIds?: string[];
   showHelp: boolean;
+  showVersion: boolean;
   listRules: boolean;
 }
 
@@ -29,6 +30,7 @@ Options:
   --github-model <model-id>    Override the GitHub Models model ID
   --rules <id,id>              Restrict analysis to specific rule IDs
   --list-rules                 Print the available rule catalog
+  --version, -v                Show version number
   --help                       Show this help message
 `;
 
@@ -48,6 +50,11 @@ export async function runCli(
 
   if (parsedArgs.showHelp) {
     io.stdout(HELP_TEXT);
+    return 0;
+  }
+
+  if (parsedArgs.showVersion) {
+    io.stdout('1.0.0\n');
     return 0;
   }
 
@@ -79,6 +86,7 @@ function parseArgs(argv: readonly string[]): ParsedArgs {
     format: 'text',
     paths: [],
     showHelp: false,
+    showVersion: false,
     listRules: false,
   };
 
@@ -89,8 +97,13 @@ function parseArgs(argv: readonly string[]): ParsedArgs {
   for (let index = 0; index < args.length; index += 1) {
     const argument = args[index];
 
-    if (argument === '--help') {
+    if (argument === '--help' || argument === '-h') {
       parsedArgs.showHelp = true;
+      continue;
+    }
+
+    if (argument === '--version' || argument === '-v') {
+      parsedArgs.showVersion = true;
       continue;
     }
 

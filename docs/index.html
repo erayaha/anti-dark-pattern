@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anti-Dark Pattern Linter | Live Playground & Scanner</title>
+  <meta name="description" content="Interactive browser playground for detecting dark patterns, manipulative UX, and deceptive design in front-end code." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-base: #0a0d14;
+      --bg-surface: #101522;
+      --bg-subtle: #171e30;
+      --bg-card: #141b2c;
+      --border-base: #222d46;
+      --border-focus: #3b82f6;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent-primary: #38bdf8;
+      --accent-danger: #f43f5e;
+      --accent-warning: #fbbf24;
+      --accent-success: #34d399;
+      --accent-purple: #a855f7;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: rgba(16, 21, 34, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-base);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.875rem 1.5rem;
+    }
+
+    .header-inner {
+      max-width: 1380px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #ef4444, #f97316);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 800;
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+    }
+
+    .brand-title {
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .brand-tag {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-primary);
+      border-radius: 9999px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+      font-family: inherit;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border-color: var(--border-base);
+    }
+
+    .btn-ghost:hover {
+      background: var(--bg-subtle);
+      color: #fff;
+      border-color: var(--text-dim);
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+      border-color: #3b82f6;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+      box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
+    }
+
+    main {
+      flex: 1;
+      max-width: 1380px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(20, 27, 44, 0.9), rgba(15, 23, 42, 0.9));
+      border: 1px solid var(--border-base);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .hero-banner h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+    }
+
+    .hero-banner p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 900px;
+    }
+
+    .presets-bar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .preset-label {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-right: 0.25rem;
+    }
+
+    .preset-btn {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-base);
+      color: var(--text-muted);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .preset-btn:hover {
+      background: #1e293b;
+      color: var(--accent-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      min-height: 540px;
+    }
+
+    @media (max-width: 980px) {
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-base);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      background: var(--bg-card);
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-base);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .panel-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .editor-wrapper {
+      position: relative;
+      flex: 1;
+      display: flex;
+      min-height: 380px;
+    }
+
+    .code-editor {
+      width: 100%;
+      height: 100%;
+      min-height: 420px;
+      background: #080b11;
+      color: #e2e8f0;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      padding: 1rem;
+      border: none;
+      resize: vertical;
+      outline: none;
+      tab-size: 2;
+    }
+
+    .code-editor:focus {
+      background: #06080d;
+    }
+
+    .findings-container {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      background: #0b0f19;
+      max-height: 520px;
+    }
+
+    .empty-state {
+      height: 100%;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--text-dim);
+      padding: 2rem;
+      gap: 0.75rem;
+    }
+
+    .empty-icon {
+      font-size: 2.5rem;
+    }
+
+    .finding-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-base);
+      border-left: 4px solid var(--accent-danger);
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .finding-card.warning {
+      border-left-color: var(--accent-warning);
+    }
+
+    .finding-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .finding-rule {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #fff;
+    }
+
+    .finding-meta {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      background: var(--bg-subtle);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    .finding-match {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      background: #080b11;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      color: #fca5a5;
+      border: 1px solid rgba(244, 63, 94, 0.2);
+      word-break: break-all;
+    }
+
+    .finding-remedy {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      background: rgba(56, 189, 248, 0.05);
+      border: 1px dashed rgba(56, 189, 248, 0.2);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+    }
+
+    .clean-alert {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+      color: #6ee7b7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .stats-pill {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+    }
+
+    .stats-pill.error {
+      background: rgba(244, 63, 94, 0.2);
+      color: #fda4af;
+      border: 1px solid rgba(244, 63, 94, 0.4);
+    }
+
+    .stats-pill.ok {
+      background: rgba(52, 211, 153, 0.2);
+      color: #6ee7b7;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+    }
+
+    .rule-reference {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-base);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .rule-reference h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    .rule-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-base);
+      border-radius: 8px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .rule-card h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+    }
+
+    .rule-card p {
+      font-size: 0.825rem;
+      color: var(--text-muted);
+    }
+
+    .rule-card code {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      background: #080b11;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      align-self: flex-start;
+      color: var(--accent-warning);
+    }
+
+    footer {
+      border-top: 1px solid var(--border-base);
+      background: var(--bg-surface);
+      padding: 1.25rem 1.5rem;
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    footer a {
+      color: var(--accent-primary);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="https://github.com/erayaha/anti-dark-pattern" class="brand">
+        <div class="brand-badge">🛡️</div>
+        <div>
+          <span class="brand-title">Anti-Dark Pattern</span>
+        </div>
+        <span class="brand-tag">v1.0.0</span>
+      </a>
+      <div class="nav-links">
+        <a href="https://github.com/erayaha/anti-dark-pattern#cli-usage" class="btn btn-ghost">CLI Docs</a>
+        <a href="https://github.com/erayaha/anti-dark-pattern#use-as-a-github-action" class="btn btn-ghost">GitHub Action</a>
+        <a href="https://github.com/erayaha/anti-dark-pattern" class="btn btn-primary" target="_blank" rel="noopener">GitHub Repo ⭐</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-banner">
+      <h1>Detect & Block Deceptive UI in Front-End Code</h1>
+      <p>
+        An open-source CI/CD linter and compliance engine that flags manipulative UX patterns like confirm shaming, forced continuity, hidden fees, artificial urgency, roach motels, and deceptive checkboxes before they ship to users.
+      </p>
+      <div class="presets-bar">
+        <span class="preset-label">Test Real Scenarios:</span>
+        <button class="preset-btn" onclick="loadPreset('prime')">Amazon Prime Cancellation</button>
+        <button class="preset-btn" onclick="loadPreset('linkedin')">LinkedIn Contact Trick</button>
+        <button class="preset-btn" onclick="loadPreset('urgency')">Fake Urgency & Countdown</button>
+        <button class="preset-btn" onclick="loadPreset('hidden-fees')">Hidden Checkout Fees</button>
+        <button class="preset-btn" onclick="loadPreset('obstructive')">Deceptive Cookie Reject</button>
+        <button class="preset-btn" onclick="loadPreset('clean')">Clean Compliant Flow</button>
+      </div>
+    </section>
+
+    <section class="workspace-grid">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span>📝</span> Source Code Snippet (HTML / JSX / Vue / Svelte)
+          </div>
+          <button class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;" onclick="clearCode()">Clear</button>
+        </div>
+        <div class="editor-wrapper">
+          <textarea id="codeEditor" class="code-editor" spellcheck="false" placeholder="Paste your HTML, JSX, Vue, or Svelte component code here to scan for dark patterns..."></textarea>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span>⚡</span> Scanner Findings
+          </div>
+          <div id="statusBadge" class="stats-pill ok">0 findings</div>
+        </div>
+        <div id="findingsList" class="findings-container">
+          <!-- Dynamic findings rendered here -->
+        </div>
+      </div>
+    </section>
+
+    <section class="rule-reference">
+      <h2><span>📋</span> Detection Rules & Regulatory Safeguards</h2>
+      <div class="rules-grid">
+        <div class="rule-card">
+          <code>confirm-shaming</code>
+          <h3>Confirm Shaming Copy</h3>
+          <p>Flags emotionally manipulative opt-out copy that shames users into accepting offers (FTC 16 CFR Part 425 compliance).</p>
+        </div>
+        <div class="rule-card">
+          <code>forced-continuity</code>
+          <h3>Forced Continuity Messaging</h3>
+          <p>Flags dark patterns that obscure automatic renewal dates and surprise post-trial charge flows.</p>
+        </div>
+        <div class="rule-card">
+          <code>hidden-costs</code>
+          <h3>Hidden Cost Disclosures</h3>
+          <p>Detects mandatory service and processing fees surfaced late in checkout instead of upfront.</p>
+        </div>
+        <div class="rule-card">
+          <code>countdown-urgency</code>
+          <h3>Artificial Urgency & Scarcity</h3>
+          <p>Catches unsubstantiated countdown timers and artificial scarcity copy designed to rush decisions.</p>
+        </div>
+        <div class="rule-card">
+          <code>roach-motel</code>
+          <h3>Roach-Motel Cancellation Gates</h3>
+          <p>Blocks multi-step friction and mandatory exit survey gates that prevent straightforward cancellation.</p>
+        </div>
+        <div class="rule-card">
+          <code>trick-question</code>
+          <h3>Pre-selected / Read-Only Opt-ins</h3>
+          <p>Detects pre-checked, non-interactive or read-only checkboxes that bypass explicit informed consent.</p>
+        </div>
+        <div class="rule-card">
+          <code>obstructive-consent</code>
+          <h3>Obstructive Consent UI</h3>
+          <p>Detects consent banners where "Accept All" is prominent while "Reject" is hidden via CSS or aria-hidden.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      Anti-Dark Pattern Linter is an open-source project by <a href="https://github.com/erayaha" target="_blank" rel="noopener">Erayaha AI</a>.
+      Published under MIT License.
+    </p>
+  </footer>
+
+  <script>
+    const PRESETS = {
+      prime: `<div className="cancellation-flow">
+  <h2>Before you go, tell us why you're leaving</h2>
+  <select name="reason" required>
+    <option value="">Select a reason</option>
+    <option value="too_expensive">Too expensive</option>
+  </select>
+
+  <p>You will lose all benefits if you leave now!</p>
+  <button onClick={handleKeep}>Keep My Membership</button>
+  <button onClick={handleCancel}>No thanks, I hate saving money</button>
+</div>`,
+
+      linkedin: `<div className="contacts-step">
+  <h3>Add your email contacts to grow your network</h3>
+  <input
+    type="checkbox"
+    checked={selectAll}
+    readOnly
+    style={{ marginRight: 8 }}
+  />
+  <label>Select all 482 contacts</label>
+  <button className="primary">Continue</button>
+</div>`,
+
+      urgency: `<div className="deal-banner">
+  <div className="badge">Limited Offer</div>
+  <p>Only 2 spots remaining for this flight!</p>
+  <div className="timer">Deal ends in 00:04:59</div>
+  <button>Book Now</button>
+</div>`,
+
+      'hidden-fees': `<div className="cart-checkout">
+  <h3>Order Summary</h3>
+  <div className="item">Room Rate: $120.00 / night</div>
+  <div className="fine-print">
+    <span>Additional charges may apply at checkout, including a mandatory service fee and processing fee.</span>
+  </div>
+  <button>Proceed to Payment</button>
+</div>`,
+
+      obstructive: `<div className="cookie-banner">
+  <p>We use tracking cookies to personalize ads and marketing.</p>
+  <button className="btn-accept">Accept all</button>
+  <button className="btn-decline" style="display:none">Reject</button>
+  <input type="checkbox" name="newsletter" checked />
+</div>`,
+
+      clean: `<div className="subscription-settings">
+  <h2>Manage Your Subscription</h2>
+  <p>Your current plan is $15/month. All taxes and fees included.</p>
+  
+  <div className="actions">
+    <button className="btn-primary" onClick={savePreferences}>Save changes</button>
+    <button className="btn-secondary" onClick={confirmCancel}>Cancel subscription</button>
+  </div>
+</div>`
+    };
+
+    const RULES = [
+      {
+        id: 'confirm-shaming',
+        title: 'Confirm Shaming Copy',
+        severity: 'error',
+        regexes: [
+          /no thanks,?\s*i\s+(hate|prefer to miss|love paying|don'?t care about|do not care about|don'?t want)[^<\n]*/gi,
+          /cancel\b[^<\n]{0,60}\band\s+lose\s+all\b/gi
+        ],
+        remedy: 'Replace guilt-based copy with neutral choices (e.g. "Decline offer" or "Cancel membership").'
+      },
+      {
+        id: 'forced-continuity',
+        title: 'Forced Continuity Messaging',
+        severity: 'error',
+        regexes: [
+          /(renews automatically|auto[- ]?renew|subscription continues unless cancelled|trial ends[^.\n]*charged)/gi
+        ],
+        remedy: 'Make automatic renewal terms and trial expiration dates explicit, prominent, and easy to cancel.'
+      },
+      {
+        id: 'hidden-costs',
+        title: 'Hidden Cost Disclosure',
+        severity: 'error',
+        regexes: [
+          /(service fee|processing fee|mandatory add-?on|fees apply at checkout|additional charges may apply)/gi
+        ],
+        remedy: 'Surface all mandatory fees and total pricing upfront on initial display.'
+      },
+      {
+        id: 'countdown-urgency',
+        title: 'Artificial Urgency / Scarcity',
+        severity: 'error',
+        regexes: [
+          /(only\s+\d+\s+(spots|left|remaining)|deal ends in|offer expires in|countdown)/gi
+        ],
+        remedy: 'Remove fake scarcity claims unless strictly substantiated with verifiable real-time inventory.'
+      },
+      {
+        id: 'roach-motel',
+        title: 'Roach-Motel Cancellation Barrier',
+        severity: 'error',
+        regexes: [
+          /before you go[^<\n]*tell us why[^<\n]*(leaving|cancell)/gi
+        ],
+        remedy: 'Allow one-click direct cancellation without mandatory survey gates or excessive friction steps.'
+      },
+      {
+        id: 'trick-question',
+        title: 'Pre-selected Read-Only Checkbox',
+        severity: 'error',
+        detect(content) {
+          const findings = [];
+          const pattern = /<input[\s\S]{0,150}type\s*=\s*["']checkbox["'][\s\S]{0,150}readOnly[\s\S]{0,100}\/>/gi;
+          let match;
+          while ((match = pattern.exec(content)) !== null) {
+            findings.push({
+              match: match[0],
+              index: match.index,
+              message: 'Detected a read-only pre-checked checkbox that prevents users from unchecking.',
+              remedy: 'Default opt-in checkboxes to unchecked and never make them read-only.'
+            });
+          }
+          return findings;
+        }
+      },
+      {
+        id: 'obstructive-consent',
+        title: 'Obstructive Consent UI',
+        severity: 'error',
+        detect(content) {
+          const findings = [];
+          const rejectHidden = /(accept all|allow all)[\s\S]{0,240}(display\s*:\s*none[\s\S]{0,120}(reject|decline)|aria-hidden\s*=\s*["']true["'][\s\S]{0,120}(reject|decline))/gi;
+          const prechecked = /<(input|button)[^>]*(newsletter|marketing|tracking|personalized ads)[^>]*checked[^>]*>/gi;
+          
+          let m;
+          while ((m = rejectHidden.exec(content)) !== null) {
+            findings.push({
+              match: m[0],
+              index: m.index,
+              message: 'Detected consent UI where "Accept" is visible while "Reject" is hidden.',
+              remedy: 'Provide an equally prominent "Reject all" button alongside "Accept all".'
+            });
+          }
+          while ((m = prechecked.exec(content)) !== null) {
+            findings.push({
+              match: m[0],
+              index: m.index,
+              message: 'Detected pre-checked marketing or tracking checkbox.',
+              remedy: 'Uncheck marketing and tracking options by default to comply with GDPR/ePrivacy.'
+            });
+          }
+          return findings;
+        }
+      }
+    ];
+
+    const editor = document.getElementById('codeEditor');
+    const findingsList = document.getElementById('findingsList');
+    const statusBadge = document.getElementById('statusBadge');
+
+    function calculateLineCol(content, index) {
+      const lines = content.slice(0, index).split('\n');
+      return {
+        line: lines.length,
+        col: lines[lines.length - 1].length + 1
+      };
+    }
+
+    function scanCode() {
+      const content = editor.value;
+      if (!content.trim()) {
+        findingsList.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <p>Paste code in the editor or select a preset scenario above to begin instant dark pattern analysis.</p>
+          </div>
+        `;
+        statusBadge.textContent = '0 findings';
+        statusBadge.className = 'stats-pill ok';
+        return;
+      }
+
+      const allFindings = [];
+
+      for (const rule of RULES) {
+        if (rule.detect) {
+          const customFindings = rule.detect(content);
+          for (const cf of customFindings) {
+            const { line, col } = calculateLineCol(content, cf.index);
+            allFindings.push({
+              ruleId: rule.id,
+              title: rule.title,
+              severity: rule.severity,
+              line,
+              col,
+              match: cf.match,
+              message: cf.message,
+              remedy: cf.remedy
+            });
+          }
+        } else if (rule.regexes) {
+          for (const rx of rule.regexes) {
+            rx.lastIndex = 0;
+            let match;
+            while ((match = rx.exec(content)) !== null) {
+              const { line, col } = calculateLineCol(content, match.index);
+              allFindings.push({
+                ruleId: rule.id,
+                title: rule.title,
+                severity: rule.severity,
+                line,
+                col,
+                match: match[0],
+                message: 'Detected deceptive or coercive pattern violating UI guidelines.',
+                remedy: rule.remedy
+              });
+            }
+          }
+        }
+      }
+
+      if (allFindings.length === 0) {
+        statusBadge.textContent = '✅ Clean (0 findings)';
+        statusBadge.className = 'stats-pill ok';
+        findingsList.innerHTML = `
+          <div class="clean-alert">
+            <div style="font-size: 2rem;">🛡️</div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: #34d399;">No Dark Patterns Detected</h3>
+            <p style="font-size: 0.85rem; color: #a7f3d0; max-width: 420px;">
+              This front-end component passed all built-in dark pattern heuristic checks. It aligns with consumer protection and transparency standards.
+            </p>
+          </div>
+        `;
+      } else {
+        statusBadge.textContent = `🚨 ${allFindings.length} finding${allFindings.length === 1 ? '' : 's'}`;
+        statusBadge.className = 'stats-pill error';
+
+        findingsList.innerHTML = allFindings.map(f => `
+          <div class="finding-card ${f.severity}">
+            <div class="finding-header">
+              <span class="finding-rule">${escapeHtml(f.title)}</span>
+              <span class="finding-meta">Line ${f.line}, Col ${f.col}</span>
+            </div>
+            <div class="finding-match">${escapeHtml(f.match)}</div>
+            <div class="finding-remedy">
+              <strong>💡 Compliance Remedy:</strong> ${escapeHtml(f.remedy)}
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+    }
+
+    function loadPreset(key) {
+      if (PRESETS[key]) {
+        editor.value = PRESETS[key];
+        scanCode();
+      }
+    }
+
+    function clearCode() {
+      editor.value = '';
+      scanCode();
+    }
+
+    editor.addEventListener('input', scanCode);
+
+    // Initial load with Amazon Prime preset
+    loadPreset('prime');
+  </script>
+</body>
+</html>

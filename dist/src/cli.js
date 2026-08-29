@@ -13,6 +13,7 @@ Options:
   --github-model <model-id>    Override the GitHub Models model ID
   --rules <id,id>              Restrict analysis to specific rule IDs
   --list-rules                 Print the available rule catalog
+  --version, -v                Show version number
   --help                       Show this help message
 `;
 async function runCli(argv, io = defaultCliIo()) {
@@ -27,6 +28,10 @@ async function runCli(argv, io = defaultCliIo()) {
     }
     if (parsedArgs.showHelp) {
         io.stdout(HELP_TEXT);
+        return 0;
+    }
+    if (parsedArgs.showVersion) {
+        io.stdout('1.0.0\n');
         return 0;
     }
     if (parsedArgs.listRules) {
@@ -55,6 +60,7 @@ function parseArgs(argv) {
         format: 'text',
         paths: [],
         showHelp: false,
+        showVersion: false,
         listRules: false,
     };
     // Strip the optional 'scan' subcommand so that both
@@ -62,8 +68,12 @@ function parseArgs(argv) {
     const args = argv[0] === 'scan' ? argv.slice(1) : argv;
     for (let index = 0; index < args.length; index += 1) {
         const argument = args[index];
-        if (argument === '--help') {
+        if (argument === '--help' || argument === '-h') {
             parsedArgs.showHelp = true;
+            continue;
+        }
+        if (argument === '--version' || argument === '-v') {
+            parsedArgs.showVersion = true;
             continue;
         }
         if (argument === '--list-rules') {
