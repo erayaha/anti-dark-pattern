@@ -6,9 +6,9 @@ Anti-Dark Pattern is a production-oriented GitHub Action and CLI for CI/CD dark-
 ![Vitest](https://img.shields.io/badge/Tested%20with-Vitest-6E9F18?logo=vitest&logoColor=white)
 ![ESLint](https://img.shields.io/badge/Linting-ESLint-4B32C3?logo=eslint&logoColor=white)
 ![Yarn](https://img.shields.io/badge/Package%20Manager-Yarn-2C8EBB?logo=yarn&logoColor=white)
-[![GitHub Pages](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-2563eb?logo=github&logoColor=white)](https://erayaha.github.io/anti-dark-pattern/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Docs-2563eb?logo=github&logoColor=white)](https://erayaha.github.io/anti-dark-pattern/)
 
-> 🌐 **Interactive Web Playground**: Try the browser scanner directly at **[erayaha.github.io/anti-dark-pattern](https://erayaha.github.io/anti-dark-pattern/)** to test HTML, JSX, Vue, and Svelte snippets with instant FTC & DSA compliance feedback.
+> 🌐 **Live Documentation & Rules**: View the publicly exposed documentation and rule catalog on GitHub Pages at **[erayaha.github.io/anti-dark-pattern](https://erayaha.github.io/anti-dark-pattern/)**.
 
 Use it as a reusable GitHub Action in your own pipelines, or run the CLI directly in a custom workflow.
 
